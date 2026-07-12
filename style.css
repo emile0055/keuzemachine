@@ -79,7 +79,7 @@ button {
 
 button:active {
 
-    transform: scale(0.96);
+    transform: scale(2);<!-- was 0.96 -->
 
 }
 
