@@ -323,5 +323,10 @@ textarea {
 
     }
 
+    .draaiKnop:disabled {
+
+    opacity: 0.6;
+
+}
 
 }
