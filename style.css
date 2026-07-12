@@ -274,8 +274,20 @@ textarea {
 
 }
 
+#samenvatting {
 
+    font-size: 18px;
 
+    font-weight: 600;
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+
+    min-height: 25px;
+
+}
+white-space: pre-line;
 
 textarea {
 
