@@ -363,18 +363,21 @@ document
 let keuzes=[];
 
 
-
 velden.forEach(v=>{
 
+let regels = v.value
+.split("\n")
+.filter(regel => regel.trim() !== "");
 
-if(v.value.trim()!=""){
 
-keuzes.push(v.value.trim());
+regels.forEach(regel => {
 
-}
-
+keuzes.push(regel.trim());
 
 });
+
+});
+
 
 
 
