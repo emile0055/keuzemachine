@@ -327,7 +327,7 @@ function verwijderWiel(index){
 
 }
 
-}
+
 
 
 
