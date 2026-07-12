@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
+
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <title>Keuzemachine Pro</title>
 
@@ -11,16 +14,13 @@
 
 <link rel="manifest" href="manifest.json">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Keuzemachine Pro">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<link rel="apple-touch-icon" href="icon-512.png">
+<meta name="theme-color" content="#111827">
 
 </head>
 
 
 <body>
+
 
 <div class="app">
 
@@ -29,32 +29,29 @@
 
 <h1>🎰 Keuzemachine Pro</h1>
 
-<div class="spelnaam">
-Spel: <strong id="spelNaam">
-Mijn spel
-</strong>
-</div>
+<button id="instellingenKnop">
+⚙️
+</button>
 
 </header>
 
 
 
+<section id="resultaat">
+
+<h2>Resultaat</h2>
+
+<div id="samenvatting">
+Draai de wielen
+</div>
+
+</section>
+
+
+
 <main id="wielen">
 
-
-<!-- Wielen worden automatisch door JavaScript gemaakt -->
-
-
 </main>
-
-
-
-<button class="instellingenKnop" id="openInstellingen">
-
-⚙️ Instellingen
-
-</button>
-
 
 
 </div>
@@ -62,134 +59,136 @@ Mijn spel
 
 
 
-<div id="instellingen" class="verborgen">
+
+<!-- INSTELLINGEN -->
+
+<div id="instellingen"
+class="pagina verborgen">
 
 
 <h1>⚙️ Instellingen</h1>
 
 
-<div id="instellingLijsten">
+<div id="wielBeheer">
+
 </div>
+
+
 
 <button id="nieuwWiel">
 ➕ Nieuw wiel
 </button>
 
+
 <button id="exporteerSpel">
 ⬇️ Exporteer spel
 </button>
+
 
 <button id="importeerSpelKnop">
 ⬆️ Importeer spel
 </button>
 
-<input 
-type="file" 
-id="importeerBestand" 
+
+<input
+type="file"
+id="importeerBestand"
 accept=".json"
-class="verborgen">
-  
-<div id="instellingLijsten">
-</div>
+hidden>
+
+
 
 <button id="terugKnop">
-
-⬅ Terug
-
+⬅️ Terug
 </button>
 
 
 </div>
 
-<!-- Nieuw wiel scherm -->
-
-<div id="nieuwWielScherm" class="verborgen">
 
 
-<h1>➕ Nieuw wiel</h1>
 
 
-<div class="lijst">
-
-<h2>Naam wiel</h2>
-
-<input 
-id="nieuwWielNaam"
-type="text"
-placeholder="bijvoorbeeld Plaats"
->
+<!-- NIEUW / BEWERK WIEL -->
 
 
-<h2>Icoon</h2>
-
-<input 
-id="nieuwWielIcoon"
-type="text"
-value="🌍"
->
+<div id="wielEditor"
+class="pagina verborgen">
 
 
-<h2>Keuzes</h2>
+<h1 id="editorTitel">
+Nieuw wiel
+</h1>
 
 
-<div id="nieuweKeuzes">
+<label>
+Naam
+</label>
+
+<input
+id="wielNaam"
+placeholder="Naam wiel">
 
 
-<textarea 
-class="keuzeRegel"
-placeholder="Eerste keuze">
+
+<label>
+Icoon
+</label>
+
+<input
+id="wielIcoon"
+placeholder="🎯">
+
+
+
+<label>
+Keuzes (één per regel)
+</label>
+
+
+<textarea
+id="wielKeuzes"
+rows="12"
+placeholder="Amsterdam
+Porto
+Lagos">
 </textarea>
 
 
-</div>
 
-
-<button id="regelToevoegen">
-
-➕ Regel toevoegen
-
-</button>
-
-
-<button id="bewaarNieuwWiel">
-
+<button id="opslaanWiel">
 💾 Opslaan
-
 </button>
 
 
-<button id="annuleerNieuwWiel">
-
-⬅ Annuleren
-
+<button id="annuleerWiel">
+Annuleren
 </button>
 
 
 </div>
 
 
-</div>
 
 
 
 <script src="app.js"></script>
 
+
+
 <script>
 
-if ("serviceWorker" in navigator) {
-
-window.addEventListener("load", function(){
+if("serviceWorker" in navigator){
 
 navigator.serviceWorker.register(
 "service-worker.js"
 );
 
-});
-
 }
 
 </script>
-  
+
+
 </body>
 
 </html>
