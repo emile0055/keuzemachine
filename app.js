@@ -6,11 +6,8 @@
 
 
 let wielen = [];
-
 let bewerkIndex = -1;
-
 let geluidAan = true;
-
 
 
 // -----------------------------
@@ -22,59 +19,31 @@ document.addEventListener(
 "DOMContentLoaded",
 ()=>{
 
-
 laadSpel();
 
-
 });
-
-
-
 
 // -----------------------------
 // SPEL LADEN
 // -----------------------------
 
-
 async function laadSpel(){
-
-
-let opgeslagen =
-localStorage.getItem(
-"keuzemachine"
-);
-
-
-
-if(opgeslagen){
-
-
-wielen =
-JSON.parse(opgeslagen);
-
-
-
-toonWielen();
-
-
-toonResultaat();
-
-
-
-return;
-
-
-}
-
-
-
-try{
-
-
-let antwoord =
-await fetch(
-"data.json"
-);
+  let opgeslagen =
+  localStorage.getItem(
+  "keuzemachine"
+  );
+  if(opgeslagen){
+    wielen =
+    JSON.parse(opgeslagen);
+    toonWielen();
+    toonResultaat();
+  return;
+  }
+  try{
+    let antwoord =
+    await fetch(
+    "data.json"
+  );
 
 
 
