@@ -1,0 +1,87 @@
+{
+  "spelnaam": "Mijn spel",
+
+  "wielen": [
+
+    {
+      "naam": "Handeling",
+      "icoon": "🎯",
+      "keuzes": [
+        "Wandelen",
+        "Springen",
+        "Rennen",
+        "Dansen",
+        "Lezen",
+        "Tekenen",
+        "Schrijven",
+        "Fietsen",
+        "Klimmen",
+        "Zingen",
+        "Koken",
+        "Bouwen",
+        "Rollen",
+        "Lachen",
+        "Fluiten"
+      ]
+    },
+
+
+    {
+      "naam": "Attribuut",
+      "icoon": "🎒",
+      "keuzes": [
+        "Rode bal",
+        "Blauwe bal",
+        "Touw",
+        "Boek",
+        "Stoel",
+        "Paraplu",
+        "Zaklamp",
+        "Fles",
+        "Bloem",
+        "Potlood",
+        "Doos",
+        "Horloge",
+        "Ring",
+        "Kaart",
+        "Steen"
+      ]
+    },
+
+
+    {
+      "naam": "Duur",
+      "icoon": "⏱️",
+      "keuzes": [
+        "10 seconden",
+        "20 seconden",
+        "30 seconden",
+        "1 minuut",
+        "2 minuten",
+        "5 minuten",
+        "10 minuten",
+        "15 minuten",
+        "30 minuten",
+        "1 uur"
+      ]
+    },
+
+
+    {
+      "naam": "Aantal",
+      "icoon": "🔢",
+      "keuzes": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "10",
+        "20",
+        "50"
+      ]
+    }
+
+  ]
+}
