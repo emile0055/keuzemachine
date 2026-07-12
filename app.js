@@ -317,7 +317,7 @@ wiel.keuzes.length
 
 veld.innerText =
 keuze;
-
+speelGeluid();
 
 
 teller++;
@@ -473,31 +473,68 @@ tekst.trim();
 // -----------------------------
 
 
+let audioContext;
+
+
 function speelGeluid(){
 
 
-if(!geluidAan)return;
+if(!geluidAan) return;
+
+
+if(!audioContext){
+
+audioContext =
+new (window.AudioContext ||
+window.webkitAudioContext)();
+
+}
+
+
+let oscillator =
+audioContext.createOscillator();
+
+
+let versterker =
+audioContext.createGain();
 
 
 
-let audio =
-new Audio();
+oscillator.type =
+"square";
+
+
+oscillator.frequency.value =
+900;
 
 
 
-audio.src =
-"data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+versterker.gain.value =
+0.03;
 
 
 
-audio.volume =
-0.2;
+oscillator.connect(versterker);
+
+versterker.connect(
+audioContext.destination
+);
 
 
 
-audio.play()
-.catch(()=>{});
+oscillator.start();
 
+
+
+setTimeout(()=>{
+
+oscillator.stop();
+
+},35);
+
+
+
+}
 
 
 }
