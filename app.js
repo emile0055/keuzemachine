@@ -224,11 +224,18 @@ function maakInstellingen(){
         </p>
 
 
-        <button onclick="verwijderWiel(${index})">
+        <button onclick="bewerkWiel(${index})">
 
-        🗑 Verwijderen
+✏️ Bewerken
 
-        </button>
+</button>
+
+
+<button onclick="verwijderWiel(${index})">
+
+🗑 Verwijderen
+
+</button>
 
         `;
 
