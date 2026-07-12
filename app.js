@@ -243,9 +243,13 @@ kaart
 // DRAAIEN
 // -----------------------------
 
+
 function draaiWiel(index){
 
-let wiel = wielen[index];
+
+let wiel =
+wielen[index];
+
 
 
 if(wiel.vergrendeld){
@@ -267,21 +271,7 @@ if(!veld)return;
 
 
 
-let knop =
-veld.parentElement.querySelector(
-".draaiKnop"
-);
-
-
-
-if(knop){
-
-knop.disabled = true;
-
-knop.innerText =
-"⏳ Bezig...";
-
-}
+let teller=0;
 
 
 
@@ -289,16 +279,8 @@ speelGeluid();
 
 
 
-let snelheid = 50;
-
-let teller = 0;
-
-let maxDraaien = 35;
-
-
-
-function volgende(){
-
+let timer =
+setInterval(()=>{
 
 
 let keuze =
@@ -306,9 +288,11 @@ let keuze =
 wiel.keuzes[
 
 Math.floor(
+
 Math.random()
 *
 wiel.keuzes.length
+
 )
 
 ];
@@ -317,64 +301,45 @@ wiel.keuzes.length
 
 veld.innerText =
 keuze;
-speelGeluid();
+
 
 
 teller++;
 
 
 
-if(teller < maxDraaien){
+if(teller>=20){
 
 
-snelheid += 8;
-
-
-
-setTimeout(
-volgende,
-snelheid
+clearInterval(
+timer
 );
 
 
 
-}
+wiel.resultaat =
+keuze;
 
-else{
-
-
-wiel.resultaat = keuze;
 
 
 bewaar();
+
 
 
 toonResultaat();
 
 
 
-if(knop){
-
-knop.disabled = false;
-
-knop.innerText =
-"🎰 Draai";
-
 }
+
+
+
+},70);
 
 
 
 }
 
-
-}
-
-
-
-volgende();
-
-
-}
 
 
 
@@ -473,68 +438,31 @@ tekst.trim();
 // -----------------------------
 
 
-let audioContext;
-
-
 function speelGeluid(){
 
 
-if(!geluidAan) return;
-
-
-if(!audioContext){
-
-audioContext =
-new (window.AudioContext ||
-window.webkitAudioContext)();
-
-}
-
-
-let oscillator =
-audioContext.createOscillator();
-
-
-let versterker =
-audioContext.createGain();
+if(!geluidAan)return;
 
 
 
-oscillator.type =
-"square";
-
-
-oscillator.frequency.value =
-900;
+let audio =
+new Audio();
 
 
 
-versterker.gain.value =
-0.03;
+audio.src =
+"data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
 
 
 
-oscillator.connect(versterker);
-
-versterker.connect(
-audioContext.destination
-);
+audio.volume =
+0.2;
 
 
 
-oscillator.start();
+audio.play()
+.catch(()=>{});
 
-
-
-setTimeout(()=>{
-
-oscillator.stop();
-
-},35);
-
-
-
-}
 
 
 }
