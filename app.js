@@ -234,58 +234,77 @@ maakInstellingen();
 };
 
 
-
-
-
-
 function maakInstellingen(){
 
+    let plek = document.getElementById(
+        "instellingLijsten"
+    );
 
-let plek =
-document.getElementById(
-"instellingLijsten"
-);
-
-
-
-plek.innerHTML="";
+    plek.innerHTML = "";
 
 
-wielen.forEach((wiel,index)=>{
+    wielen.forEach((wiel,index)=>{
 
 
-let blok =
-document.createElement("div");
+        let blok = document.createElement("div");
+
+        blok.className = "lijst";
 
 
-blok.className="lijst";
+        blok.innerHTML = `
+
+        <h2>
+        ${wiel.icoon}
+        ${wiel.naam}
+        </h2>
+
+        <p>
+        ${wiel.keuzes.length} keuzes
+        </p>
 
 
-blok.innerHTML=`
+        <button class="verwijderKnop"
+        data-index="${index}">
 
-<h2>
-${wiel.icoon}
-${wiel.naam}
-</h2>
+        🗑 Verwijderen
 
-<p>
-${wiel.keuzes.length} keuzes
-</p>
+        </button>
+
+        `;
 
 
-<button onclick="verwijderWiel(${index})">
-
-🗑 Verwijderen
-
-</button>
-
-`;
+        plek.appendChild(blok);
 
 
-plek.appendChild(blok);
+    });
 
 
-});
+
+    document
+    .querySelectorAll(".verwijderKnop")
+    .forEach(knop=>{
+
+
+        knop.onclick=function(){
+
+
+            let index =
+            this.dataset.index;
+
+
+            verwijderWiel(index);
+
+
+        };
+
+
+    });
+
+
+}
+
+
+
 
 function verwijderWiel(index){
 
