@@ -568,12 +568,26 @@ let lezen =
 new FileReader();
 
 
-
 lezen.onload=function(){
 
 
 let data =
 JSON.parse(lezen.result);
+
+
+
+let akkoord =
+confirm(
+"Het huidige spel wordt vervangen.\n\nDoorgaan?"
+);
+
+
+
+if(!akkoord){
+
+return;
+
+}
 
 
 
@@ -595,6 +609,7 @@ alert(
 
 
 };
+
 
 
 
