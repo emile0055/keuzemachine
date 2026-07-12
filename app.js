@@ -308,35 +308,22 @@ function maakInstellingen(){
 
 function verwijderWiel(index){
 
-
-let naam =
-wielen[index].naam;
-
-
-let akkoord =
-confirm(
-"Wiel '"+naam+"' verwijderen?"
-);
+    let akkoord = confirm(
+        "Wiel verwijderen?"
+    );
 
 
+    if(akkoord){
 
-if(akkoord){
+        wielen.splice(index,1);
 
+        bewaar();
 
-wielen.splice(index,1);
+        bouwScherm();
 
+        maakInstellingen();
 
-bewaar();
-
-
-maakInstellingen();
-
-
-bouwScherm();
-
-
-}
-
+    }
 
 }
 
