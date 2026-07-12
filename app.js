@@ -1,37 +1,51 @@
 // Keuzemachine Pro 5.0
-// Data wordt geladen uit data.json
+// Dynamische wielen + instellingen
+
 
 let wielen = [];
 
 const container = document.getElementById("wielen");
 
 
-// Data laden
+// ----------------------------
+// DATA LADEN
+// ----------------------------
 
-async function laadData() {
+async function laadData(){
 
-    try {
+    let opgeslagen =
+    localStorage.getItem("keuzemachine");
 
-        const antwoord = await fetch("data.json");
 
-        const data = await antwoord.json();
+    if(opgeslagen){
 
-        wielen = data.wielen;
-
-        document.getElementById("spelNaam").textContent =
-            data.spelnaam;
-
+        wielen = JSON.parse(opgeslagen);
 
         bouwScherm();
 
     }
+    else {
 
-    catch(error){
 
-        console.log("Fout bij laden data:", error);
+        const antwoord =
+        await fetch("data.json");
 
-        container.innerHTML =
-        "Kan data.json niet laden";
+
+        const data =
+        await antwoord.json();
+
+
+        wielen=data.wielen;
+
+
+        bewaar();
+
+
+        document.getElementById("spelNaam")
+        .textContent=data.spelnaam;
+
+
+        bouwScherm();
 
     }
 
@@ -40,7 +54,26 @@ async function laadData() {
 
 
 
-// Kaarten maken
+// ----------------------------
+// OPSLAAN
+// ----------------------------
+
+function bewaar(){
+
+    localStorage.setItem(
+        "keuzemachine",
+        JSON.stringify(wielen)
+    );
+
+}
+
+
+
+
+
+// ----------------------------
+// HOOFDSCHERM
+// ----------------------------
 
 function bouwScherm(){
 
@@ -50,7 +83,9 @@ function bouwScherm(){
     wielen.forEach((wiel,index)=>{
 
 
-        let kaart=document.createElement("div");
+        let kaart =
+        document.createElement("div");
+
 
         kaart.className="wiel-kaart";
 
@@ -68,8 +103,11 @@ function bouwScherm(){
         </div>
 
 
-        <div class="wiel-waarde" id="waarde${index}">
+        <div class="wiel-waarde"
+        id="waarde${index}">
+
         ${wiel.keuzes[0]}
+
         </div>
 
 
@@ -94,71 +132,62 @@ function bouwScherm(){
 
 
 
-// Draaien
+// ----------------------------
+// DRAAIEN
+// ----------------------------
 
 function draai(index){
 
 
-    let wiel=wielen[index];
-
-    let tekst=document.getElementById(
-        "waarde"+index
-    );
+let wiel=wielen[index];
 
 
-    tekst.classList.add("draaien");
+let tekst =
+document.getElementById(
+"waarde"+index
+);
 
 
-    let teller=0;
+
+tekst.classList.add(
+"draaien"
+);
 
 
-    let timer=setInterval(()=>{
+
+let teller=0;
 
 
-        let keuze =
-        wiel.keuzes[
-            Math.floor(
-                Math.random()
-                *
-                wiel.keuzes.length
-            )
-        ];
+let timer=setInterval(()=>{
 
 
-        tekst.textContent=keuze;
+tekst.textContent =
+wiel.keuzes[
+Math.floor(
+Math.random()*wiel.keuzes.length
+)
+];
 
 
-        teller++;
+teller++;
 
 
-        if(teller>15){
+if(teller>15){
 
 
-            clearInterval(timer);
+clearInterval(timer);
 
 
-            tekst.classList.remove(
-                "draaien"
-            );
+tekst.classList.remove(
+"draaien"
+);
 
 
-            let eind =
-            wiel.keuzes[
-                Math.floor(
-                    Math.random()
-                    *
-                    wiel.keuzes.length
-                )
-            ];
+}
 
 
-            tekst.textContent=eind;
 
-
-        }
-
-
-    },80);
+},80);
 
 
 }
@@ -167,7 +196,10 @@ function draai(index){
 
 
 
-// Instellingen openen
+// ----------------------------
+// INSTELLINGEN
+// ----------------------------
+
 
 document
 .getElementById("openInstellingen")
@@ -193,7 +225,6 @@ maakInstellingen();
 
 
 
-// Instellingen tonen
 
 function maakInstellingen(){
 
@@ -204,13 +235,17 @@ document.getElementById(
 );
 
 
+
 plek.innerHTML="";
 
 
-wielen.forEach((wiel,index)=>{
+
+wielen.forEach((wiel)=>{
 
 
-let blok=document.createElement("div");
+let blok =
+document.createElement("div");
+
 
 blok.className="lijst";
 
@@ -222,17 +257,20 @@ ${wiel.icoon}
 ${wiel.naam}
 </h2>
 
-<textarea id="lijst${index}">
-${wiel.keuzes.join("\n")}
-</textarea>
+<p>
+${wiel.keuzes.length} keuzes
+</p>
 
 `;
+
 
 
 plek.appendChild(blok);
 
 
+
 });
+
 
 
 }
@@ -240,41 +278,168 @@ plek.appendChild(blok);
 
 
 
+// ----------------------------
+// NIEUW WIEL
+// ----------------------------
 
-// Terug uit instellingen
 
 document
-.getElementById("terugKnop")
+.getElementById("nieuwWiel")
 .onclick=function(){
 
 
-wielen.forEach((wiel,index)=>{
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
 
 
-let tekst=
-document.getElementById(
-"lijst"+index
-).value;
+document
+.getElementById("nieuwWielScherm")
+.classList.remove("verborgen");
+
+
+};
 
 
 
-wiel.keuzes =
-tekst
-.split("\n")
-.filter(
-regel=>regel.trim()!=""
-);
+
+
+// extra regel toevoegen
+
+document
+.getElementById("regelToevoegen")
+.onclick=function(){
+
+
+let veld =
+document.createElement("textarea");
+
+
+veld.className="keuzeRegel";
+
+
+veld.placeholder="Nieuwe keuze";
+
+
+document
+.getElementById("nieuweKeuzes")
+.appendChild(veld);
+
+
+};
+
+
+
+
+
+// nieuw wiel bewaren
+
+document
+.getElementById("bewaarNieuwWiel")
+.onclick=function(){
+
+
+
+let naam =
+document
+.getElementById("nieuwWielNaam")
+.value;
+
+
+
+let icoon =
+document
+.getElementById("nieuwWielIcoon")
+.value;
+
+
+
+let velden =
+document
+.querySelectorAll(".keuzeRegel");
+
+
+
+let keuzes=[];
+
+
+
+velden.forEach(v=>{
+
+
+if(v.value.trim()!=""){
+
+keuzes.push(v.value.trim());
+
+}
 
 
 });
 
 
 
-localStorage.setItem(
-"keuzemachine",
-JSON.stringify(wielen)
-);
 
+if(
+naam &&
+keuzes.length>0
+){
+
+
+wielen.push({
+
+naam:naam,
+
+icoon:icoon,
+
+keuzes:keuzes
+
+});
+
+
+
+bewaar();
+
+
+
+bouwScherm();
+
+
+
+terugNaarHoofdscherm();
+
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+// annuleren
+
+document
+.getElementById("annuleerNieuwWiel")
+.onclick=function(){
+
+terugNaarHoofdscherm();
+
+};
+
+
+
+
+
+function terugNaarHoofdscherm(){
+
+
+document
+.getElementById("nieuwWielScherm")
+.classList.add("verborgen");
 
 
 document
@@ -287,15 +452,13 @@ document
 .classList.remove("verborgen");
 
 
-bouwScherm();
-
-
-};
+}
 
 
 
 
 
-// Start app
+
+// START
 
 laadData();
