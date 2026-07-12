@@ -69,7 +69,7 @@ button {
 
     background: #00254d 
 
-    color: white;
+    color: red; <!-- was white -->
 
     cursor: pointer;
 
