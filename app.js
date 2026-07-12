@@ -3,6 +3,7 @@
 
 
 let wielen = [];
+let bewerkIndex = -1;
 
 const container = document.getElementById("wielen");
 
@@ -424,15 +425,36 @@ regel.trim()
 if(naam && keuzes.length){
 
 
-wielen.push({
+if(bewerkIndex >= 0){
 
-naam:naam,
 
-icoon:icoon,
+    wielen[bewerkIndex] = {
 
-keuzes:keuzes
+        naam:naam,
 
-});
+        icoon:icoon,
+
+        keuzes:keuzes
+
+    };
+
+
+}
+else{
+
+
+    wielen.push({
+
+        naam:naam,
+
+        icoon:icoon,
+
+        keuzes:keuzes
+
+    });
+
+
+}
 
 
 bewaar();
@@ -633,7 +655,7 @@ function bewerkWiel(index){
     document
     .getElementById("nieuwWielScherm")
     .classList.remove("verborgen");
-
+    bewerkIndex = -1;
 
     document
     .getElementById("nieuwWielNaam")
