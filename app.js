@@ -1,175 +1,486 @@
-// Keuzemachine Pro
-// Complete versie
+// =====================================
+// Keuzemachine Pro 2.0
+// app.js
+// Deel A
+// =====================================
 
 
 let wielen = [];
+
 let bewerkIndex = -1;
 
-const container = document.getElementById("wielen");
+let geluidAan = true;
 
 
-// ----------------------------
-// DATA LADEN
-// ----------------------------
 
-async function laadData() {
-
-    let opgeslagen =
-    localStorage.getItem("keuzemachine");
+// -----------------------------
+// START
+// -----------------------------
 
 
-    if (opgeslagen) {
-
-        wielen = JSON.parse(opgeslagen);
-
-        bouwScherm();
-
-    } else {
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
 
 
-        let antwoord =
-        await fetch("data.json");
+laadSpel();
 
 
-        let data =
-        await antwoord.json();
+});
 
 
-        wielen = data.wielen;
 
 
-        bewaar();
+// -----------------------------
+// SPEL LADEN
+// -----------------------------
 
 
-        if(document.getElementById("spelNaam")){
-            document.getElementById("spelNaam").textContent =
-            data.spelnaam;
-        }
+async function laadSpel(){
 
 
-        bouwScherm();
+let opgeslagen =
+localStorage.getItem(
+"keuzemachine"
+);
 
-    }
+
+
+if(opgeslagen){
+
+
+wielen =
+JSON.parse(opgeslagen);
+
+
+
+toonWielen();
+
+
+toonResultaat();
+
+
+
+return;
+
 
 }
 
 
 
-// ----------------------------
+try{
+
+
+let antwoord =
+await fetch(
+"data.json"
+);
+
+
+
+let data =
+await antwoord.json();
+
+
+
+wielen =
+data.wielen;
+
+
+
+bewaar();
+
+
+
+toonWielen();
+
+
+
+}
+catch(e){
+
+
+console.log(
+"Geen data.json gevonden"
+);
+
+
+}
+
+
+
+}
+
+
+
+
+// -----------------------------
 // OPSLAAN
-// ----------------------------
+// -----------------------------
+
 
 function bewaar(){
 
-    localStorage.setItem(
-        "keuzemachine",
-        JSON.stringify(wielen)
-    );
+
+localStorage.setItem(
+
+"keuzemachine",
+
+JSON.stringify(wielen)
+
+);
+
 
 }
 
 
 
-// ----------------------------
-// HOOFDSCHERM
-// ----------------------------
-
-function bouwScherm(){
-
-    container.innerHTML="";
 
 
-    wielen.forEach((wiel,index)=>{
+// -----------------------------
+// WIELEN TONEN
+// -----------------------------
 
 
-        let kaart =
-        document.createElement("div");
+function toonWielen(){
 
 
-        kaart.className="wiel-kaart";
+let scherm =
+document.getElementById(
+"wielen"
+);
 
 
-        kaart.innerHTML=`
 
-        <div class="wiel-titel">
-        ${wiel.icoon}
-        ${wiel.naam}
-        </div>
+if(!scherm)return;
 
 
-        <div class="wiel-waarde" id="waarde${index}">
-        ${wiel.keuzes[0] || ""}
-        </div>
+
+scherm.innerHTML="";
 
 
-        <button onclick="draai(${index})">
 
-        Draai ${wiel.naam}
-
-        </button>
-
-        `;
+wielen.forEach(
+(wiel,index)=>{
 
 
-        container.appendChild(kaart);
+let kaart =
+document.createElement(
+"div"
+);
 
-    });
+
+
+kaart.className =
+"wiel";
+
+
+
+kaart.innerHTML = `
+
+
+<div class="wiel-titel">
+
+${wiel.icoon || "🎯"}
+${wiel.naam}
+
+${wiel.vergrendeld ? " 🔒" : ""}
+
+</div>
+
+
+
+<div class="wiel-waarde"
+id="waarde${index}">
+
+${wiel.resultaat || wiel.keuzes[0]}
+
+</div>
+
+
+
+<button
+class="draaiKnop"
+onclick="draaiWiel(${index})">
+
+🎰 Draai
+
+</button>
+
+
+<button
+onclick="vergrendelWiel(${index})">
+
+${wiel.vergrendeld ? "🔒" : "🔓"}
+
+</button>
+
+
+`;
+
+
+
+scherm.appendChild(
+kaart
+);
+
+
 
 }
 
 
 
-// ----------------------------
+);
+
+
+}
+
+
+
+
+
+// -----------------------------
 // DRAAIEN
-// ----------------------------
-
-function draai(index){
-
-    let wiel=wielen[index];
-
-    let tekst =
-    document.getElementById(
-        "waarde"+index
-    );
+// -----------------------------
 
 
-    let teller=0;
+function draaiWiel(index){
 
 
-    let timer=setInterval(()=>{
+let wiel =
+wielen[index];
 
 
-        tekst.textContent =
-        wiel.keuzes[
-            Math.floor(
-            Math.random()*wiel.keuzes.length
-            )
-        ];
 
+if(wiel.vergrendeld){
 
-        teller++;
-
-
-        if(teller>15){
-
-            clearInterval(timer);
-
-        }
-
-
-    },80);
+return;
 
 }
 
 
 
-// ----------------------------
+let veld =
+document.getElementById(
+"waarde"+index
+);
+
+
+
+if(!veld)return;
+
+
+
+let teller=0;
+
+
+
+speelGeluid();
+
+
+
+let timer =
+setInterval(()=>{
+
+
+let keuze =
+
+wiel.keuzes[
+
+Math.floor(
+
+Math.random()
+*
+wiel.keuzes.length
+
+)
+
+];
+
+
+
+veld.innerText =
+keuze;
+
+
+
+teller++;
+
+
+
+if(teller>=20){
+
+
+clearInterval(
+timer
+);
+
+
+
+wiel.resultaat =
+keuze;
+
+
+
+bewaar();
+
+
+
+toonResultaat();
+
+
+
+}
+
+
+
+},70);
+
+
+
+}
+
+
+
+
+
+// -----------------------------
+// VERGRENDELEN
+// -----------------------------
+
+
+function vergrendelWiel(index){
+
+
+wielen[index].vergrendeld =
+
+!wielen[index].vergrendeld;
+
+
+
+bewaar();
+
+
+
+toonWielen();
+
+
+
+}
+
+
+
+
+
+
+// -----------------------------
+// RESULTAAT SAMENVATTING
+// -----------------------------
+
+
+function toonResultaat(){
+
+
+let tekst="";
+
+
+
+wielen.forEach(
+wiel=>{
+
+
+if(wiel.resultaat){
+
+
+tekst +=
+wiel.resultaat +
+" ";
+
+
+}
+
+
+
+}
+
+);
+
+
+
+let veld =
+document.getElementById(
+"samenvatting"
+);
+
+
+
+if(veld){
+
+
+veld.innerText =
+tekst;
+
+
+}
+
+
+}
+
+
+
+
+
+// -----------------------------
+// GELUID
+// -----------------------------
+
+
+function speelGeluid(){
+
+
+if(!geluidAan)return;
+
+
+
+let audio =
+new Audio();
+
+
+
+audio.src =
+"data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+
+
+
+audio.volume =
+0.2;
+
+
+
+audio.play()
+.catch(()=>{});
+
+
+
+}
+// =====================================
+// Keuzemachine Pro 2.0
+// app.js
+// Deel B
+// =====================================
+
+
+
+// -----------------------------
 // INSTELLINGEN OPENEN
-// ----------------------------
+// -----------------------------
+
 
 document
-.getElementById("openInstellingen")
-.onclick=function(){
+.getElementById("instellingenKnop")
+?.addEventListener(
+"click",
+()=>{
 
 
 document
@@ -182,50 +493,92 @@ document
 .classList.remove("verborgen");
 
 
-maakInstellingen();
-
-};
+toonBeheer();
 
 
-
-// ----------------------------
-// INSTELLINGEN TONEN
-// ----------------------------
-
-function maakInstellingen(){
-
-    let plek =
-    document.getElementById(
-    "instellingLijsten"
-    );
+});
 
 
-    plek.innerHTML="";
 
 
-    wielen.forEach((wiel,index)=>{
+
+// -----------------------------
+// TERUG
+// -----------------------------
 
 
-        let blok =
-        document.createElement("div");
+document
+.getElementById("terugKnop")
+?.addEventListener(
+"click",
+()=>{
 
 
-        blok.className="lijst";
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
 
 
-        blok.innerHTML=`
-
-        <h2>
-        ${wiel.icoon}
-        ${wiel.naam}
-        </h2>
-
-        <p>
-        ${wiel.keuzes.length} keuzes
-        </p>
+document
+.querySelector(".app")
+.classList.remove("verborgen");
 
 
-        <button onclick="bewerkWiel(${index})">
+});
+
+
+
+
+
+
+// -----------------------------
+// BEHEERLIJST
+// -----------------------------
+
+
+function toonBeheer(){
+
+
+let lijst =
+document.getElementById(
+"wielBeheer"
+);
+
+
+
+if(!lijst)return;
+
+
+
+lijst.innerHTML="";
+
+
+
+wielen.forEach(
+(wiel,index)=>{
+
+
+let blok =
+document.createElement(
+"div"
+);
+
+
+
+blok.innerHTML=`
+
+<h3>
+${wiel.icoon || "🎯"}
+${wiel.naam}
+</h3>
+
+
+<p>
+${wiel.keuzes.length} keuzes
+</p>
+
+
+<button onclick="bewerkWiel(${index})">
 
 ✏️ Bewerken
 
@@ -238,87 +591,64 @@ function maakInstellingen(){
 
 </button>
 
-        `;
+`;
 
 
-        plek.appendChild(blok);
+
+lijst.appendChild(
+blok
+);
 
 
-    });
+
+}
+
+);
+
+
 
 }
 
 
 
-// ----------------------------
-// TERUG KNOP
-// ----------------------------
-
-if(document.getElementById("terugKnop")){
-
-document
-.getElementById("terugKnop")
-.onclick=function(){
-
-
-document
-.getElementById("instellingen")
-.classList.add("verborgen");
-
-
-document
-.querySelector(".app")
-.classList.remove("verborgen");
-
-
-};
-
-}
 
 
 
-// ----------------------------
-// WIEL VERWIJDEREN
-// ----------------------------
-
-function verwijderWiel(index){
-
-    let naam =
-    wielen[index].naam;
-
-
-    if(confirm(
-    "Wiel '"+naam+"' verwijderen?"
-    )){
-
-
-        wielen.splice(index,1);
-
-
-        bewaar();
-
-
-        bouwScherm();
-
-
-        maakInstellingen();
-
-    }
-
-}
-
-
-
-// ----------------------------
-// NIEUW WIEL OPENEN
-// ----------------------------
-
-if(document.getElementById("nieuwWiel")){
+// -----------------------------
+// NIEUW WIEL
+// -----------------------------
 
 
 document
 .getElementById("nieuwWiel")
-.onclick=function(){
+?.addEventListener(
+"click",
+()=>{
+
+
+bewerkIndex=-1;
+
+
+
+document
+.getElementById("editorTitel")
+.innerText =
+"Nieuw wiel";
+
+
+
+openEditor();
+
+
+
+});
+
+
+
+
+
+
+function openEditor(){
 
 
 document
@@ -326,145 +656,202 @@ document
 .classList.add("verborgen");
 
 
+
 document
-.getElementById("nieuwWielScherm")
+.getElementById("wielEditor")
 .classList.remove("verborgen");
 
 
-};
+
+document
+.getElementById("wielNaam")
+.value="";
+
+
+
+document
+.getElementById("wielIcoon")
+.value="🎯";
+
+
+
+document
+.getElementById("wielKeuzes")
+.value="";
+
 
 
 }
 
 
 
-// ----------------------------
-// EXTRA REGEL
-// ----------------------------
-
-if(document.getElementById("regelToevoegen")){
 
 
-document
-.getElementById("regelToevoegen")
-.onclick=function(){
+// -----------------------------
+// BEWERKEN
+// -----------------------------
 
 
-let veld =
-document.createElement("textarea");
+function bewerkWiel(index){
 
 
-veld.className="keuzeRegel";
+bewerkIndex=index;
 
 
-veld.placeholder="Nieuwe keuze";
+
+let wiel =
+wielen[index];
+
 
 
 document
-.getElementById("nieuweKeuzes")
-.appendChild(veld);
+.getElementById("editorTitel")
+.innerText =
+"Wiel bewerken";
 
 
-};
+
+document
+.getElementById("wielNaam")
+.value =
+wiel.naam;
+
+
+
+document
+.getElementById("wielIcoon")
+.value =
+wiel.icoon;
+
+
+
+document
+.getElementById("wielKeuzes")
+.value =
+wiel.keuzes.join("\n");
+
+
+
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
+
+
+
+document
+.getElementById("wielEditor")
+.classList.remove("verborgen");
+
+
 
 }
 
 
 
-// ----------------------------
-// NIEUW WIEL OPSLAAN
-// ----------------------------
 
-if(document.getElementById("bewaarNieuwWiel")){
+
+// -----------------------------
+// OPSLAAN WIEL
+// -----------------------------
 
 
 document
-.getElementById("bewaarNieuwWiel")
-.onclick=function(){
+.getElementById("opslaanWiel")
+?.addEventListener(
+"click",
+()=>{
 
 
-let naam =
-document.getElementById("nieuwWielNaam").value;
+let nieuwWiel={
 
 
-let icoon =
-document.getElementById("nieuwWielIcoon").value;
+naam:
+document
+.getElementById("wielNaam")
+.value.trim(),
 
 
-let velden =
-document.querySelectorAll(".keuzeRegel");
+icoon:
+document
+.getElementById("wielIcoon")
+.value.trim(),
 
 
-let keuzes=[];
+keuzes:
 
+document
+.getElementById("wielKeuzes")
+.value
 
-velden.forEach(v=>{
-
-
-v.value
 .split("\n")
-.forEach(regel=>{
+
+.map(x=>x.trim())
+
+.filter(x=>x!="")
 
 
-if(regel.trim()!=""){
 
-keuzes.push(
-regel.trim()
+};
+
+
+
+if(!nieuwWiel.naam ||
+nieuwWiel.keuzes.length===0){
+
+
+alert(
+"Vul een naam en minimaal één keuze in"
 );
 
+
+return;
+
+
 }
 
 
-});
 
 
-});
+if(bewerkIndex>=0){
 
 
-
-if(naam && keuzes.length){
-
-
-if(bewerkIndex >= 0){
+nieuwWiel.resultaat =
+wielen[bewerkIndex].resultaat;
 
 
-    wielen[bewerkIndex] = {
+nieuwWiel.vergrendeld =
+wielen[bewerkIndex].vergrendeld;
 
-        naam:naam,
 
-        icoon:icoon,
+wielen[bewerkIndex]=
+nieuwWiel;
 
-        keuzes:keuzes
-
-    };
 
 
 }
 else{
 
 
-    wielen.push({
+wielen.push(
+nieuwWiel
+);
 
-        naam:naam,
-
-        icoon:icoon,
-
-        keuzes:keuzes
-
-    });
 
 
 }
+
 
 
 bewaar();
 
 
-bouwScherm();
+
+toonWielen();
+
 
 
 document
-.getElementById("nieuwWielScherm")
+.getElementById("wielEditor")
 .classList.add("verborgen");
 
 
@@ -473,30 +860,33 @@ document
 .classList.remove("verborgen");
 
 
-}
 
-
-};
-
-
-}
+bewerkIndex=-1;
 
 
 
-// ----------------------------
-// ANNULEREN NIEUW WIEL
-// ----------------------------
-
-if(document.getElementById("annuleerNieuwWiel")){
+});
 
 
-document
-.getElementById("annuleerNieuwWiel")
-.onclick=function(){
+
+
+
+
+
+// -----------------------------
+// ANNULEREN
+// -----------------------------
 
 
 document
-.getElementById("nieuwWielScherm")
+.getElementById("annuleerWiel")
+?.addEventListener(
+"click",
+()=>{
+
+
+document
+.getElementById("wielEditor")
 .classList.add("verborgen");
 
 
@@ -505,197 +895,223 @@ document
 .classList.remove("verborgen");
 
 
-};
+
+bewerkIndex=-1;
+
+
+
+});
+
+
+
+
+
+
+
+// -----------------------------
+// VERWIJDEREN
+// -----------------------------
+
+
+function verwijderWiel(index){
+
+
+if(confirm(
+
+"Wiel verwijderen?"
+
+)){
+
+
+wielen.splice(
+index,
+1
+);
+
+
+
+bewaar();
+
+
+
+toonWielen();
+
+
+
+toonBeheer();
+
+
+
+}
+
 
 }
 
 
 
-// ----------------------------
+
+
+// -----------------------------
 // EXPORT
-// ----------------------------
-
-if(document.getElementById("exporteerSpel")){
+// -----------------------------
 
 
 document
 .getElementById("exporteerSpel")
-.onclick=function(){
+?.addEventListener(
+"click",
+()=>{
 
 
-let blob =
+let bestand =
 new Blob(
+
 [
 JSON.stringify(
-{wielen:wielen},
+{
+wielen:wielen
+},
 null,
-2)
+2
+)
+
 ],
+
 {
 type:"application/json"
-});
+}
+
+);
+
 
 
 let link =
 document.createElement("a");
 
 
+
 link.href =
-URL.createObjectURL(blob);
+URL.createObjectURL(
+bestand
+);
+
 
 
 link.download =
-"keuzemachine-spel.json";
+"keuzemachine.json";
+
 
 
 link.click();
 
 
-};
 
-}
-
+});
 
 
-// ----------------------------
+
+
+
+
+
+// -----------------------------
 // IMPORT
-// ----------------------------
-
-if(document.getElementById("importeerSpelKnop")){
+// -----------------------------
 
 
 document
 .getElementById("importeerSpelKnop")
-.onclick=function(){
+?.addEventListener(
+"click",
+()=>{
+
 
 document
 .getElementById("importeerBestand")
 .click();
 
-};
-
-}
 
 
+});
 
-if(document.getElementById("importeerBestand")){
+
+
 
 
 document
 .getElementById("importeerBestand")
-.onchange=function(e){
+?.addEventListener(
+"change",
+(e)=>{
 
 
 let bestand =
 e.target.files[0];
 
 
+
+if(!bestand)return;
+
+
+
 let lezen =
 new FileReader();
 
 
-lezen.onload=function(){
+
+lezen.onload=()=>{
 
 
 let data =
-JSON.parse(lezen.result);
+JSON.parse(
+lezen.result
+);
 
 
-if(confirm(
-"Huidig spel vervangen?"
-)){
+
+if(data.wielen){
 
 
-wielen=data.wielen;
+wielen =
+data.wielen;
+
 
 
 bewaar();
 
 
-bouwScherm();
+
+toonWielen();
+
 
 
 alert(
-"Spel geïmporteerd"
+"Import klaar"
 );
 
 
+
 }
+
 
 
 };
 
 
-lezen.readAsText(bestand);
+
+lezen.readAsText(
+bestand
+);
 
 
-};
 
-}
-
-// ----------------------------
-// WIEL BEWERKEN
-// ----------------------------
-
-let bewerkIndex = -1;
+});
 
 
-function bewerkWiel(index){
-
-    bewerkIndex = index;
-
-    let wiel = wielen[index];
 
 
-    document
-    .getElementById("instellingen")
-    .classList.add("verborgen");
 
 
-    document
-    .getElementById("nieuwWielScherm")
-    .classList.remove("verborgen");
-    bewerkIndex = -1;
-
-    document
-    .getElementById("nieuwWielNaam")
-    .value = wiel.naam;
-
-
-    document
-    .getElementById("nieuwWielIcoon")
-    .value = wiel.icoon;
-
-
-    let veld =
-    document.getElementById("nieuweKeuzes");
-
-
-    veld.innerHTML = "";
-
-
-    wiel.keuzes.forEach(keuze=>{
-
-
-        let tekst =
-        document.createElement("textarea");
-
-
-        tekst.className =
-        "keuzeRegel";
-
-
-        tekst.value = keuze;
-
-
-        veld.appendChild(tekst);
-
-
-    });
-
-
-}
-
-// START
-
-laadData();
+// =====================================
+// EINDE Keuzemachine Pro 2.0
+// =====================================
