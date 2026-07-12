@@ -377,12 +377,9 @@ toonWielen();
 // RESULTAAT SAMENVATTING
 // -----------------------------
 
-
 function toonResultaat(){
 
-
 let tekst="";
-
 
 
 wielen.forEach(
@@ -393,12 +390,20 @@ if(wiel.resultaat){
 
 
 tekst +=
-wiel.resultaat +
-" ";
+(wiel.icoon || "🎯")
++
+" "
++
+wiel.naam
++
+"\n"
++
+wiel.resultaat
++
+"\n\n";
 
 
 }
-
 
 
 }
@@ -416,10 +421,8 @@ document.getElementById(
 
 if(veld){
 
-
 veld.innerText =
-tekst;
-
+tekst.trim();
 
 }
 
