@@ -199,8 +199,20 @@ tekst.classList.remove(
 // ----------------------------
 // INSTELLINGEN
 // ----------------------------
+document
+.getElementById("terugKnop")
+.onclick=function(){
+
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
 
 
+document
+.querySelector(".app")
+.classList.remove("verborgen");
+
+};
 document
 .getElementById("openInstellingen")
 .onclick=function(){
