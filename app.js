@@ -1,5 +1,5 @@
-// Keuzemachine Pro 5.0
-// Dynamische wielen + instellingen
+// Keuzemachine Pro
+// Complete versie
 
 
 let wielen = [];
@@ -11,38 +11,39 @@ const container = document.getElementById("wielen");
 // DATA LADEN
 // ----------------------------
 
-async function laadData(){
+async function laadData() {
 
     let opgeslagen =
     localStorage.getItem("keuzemachine");
 
 
-    if(opgeslagen){
+    if (opgeslagen) {
 
         wielen = JSON.parse(opgeslagen);
 
         bouwScherm();
 
-    }
-    else {
+    } else {
 
 
-        const antwoord =
+        let antwoord =
         await fetch("data.json");
 
 
-        const data =
+        let data =
         await antwoord.json();
 
 
-        wielen=data.wielen;
+        wielen = data.wielen;
 
 
         bewaar();
 
 
-        document.getElementById("spelNaam")
-        .textContent=data.spelnaam;
+        if(document.getElementById("spelNaam")){
+            document.getElementById("spelNaam").textContent =
+            data.spelnaam;
+        }
 
 
         bouwScherm();
@@ -50,7 +51,6 @@ async function laadData(){
     }
 
 }
-
 
 
 
@@ -66,8 +66,6 @@ function bewaar(){
     );
 
 }
-
-
 
 
 
@@ -93,26 +91,17 @@ function bouwScherm(){
         kaart.innerHTML=`
 
         <div class="wiel-titel">
-
-        <span class="wiel-icoon">
         ${wiel.icoon}
-        </span>
-
         ${wiel.naam}
-
         </div>
 
 
-        <div class="wiel-waarde"
-        id="waarde${index}">
-
-        ${wiel.keuzes[0]}
-
+        <div class="wiel-waarde" id="waarde${index}">
+        ${wiel.keuzes[0] || ""}
         </div>
 
 
-        <button class="draaiKnop"
-        onclick="draai(${index})">
+        <button onclick="draai(${index})">
 
         Draai ${wiel.naam}
 
@@ -123,12 +112,9 @@ function bouwScherm(){
 
         container.appendChild(kaart);
 
-
     });
 
 }
-
-
 
 
 
@@ -138,81 +124,48 @@ function bouwScherm(){
 
 function draai(index){
 
+    let wiel=wielen[index];
 
-let wiel=wielen[index];
-
-
-let tekst =
-document.getElementById(
-"waarde"+index
-);
+    let tekst =
+    document.getElementById(
+        "waarde"+index
+    );
 
 
-
-tekst.classList.add(
-"draaien"
-);
+    let teller=0;
 
 
-
-let teller=0;
-
-
-let timer=setInterval(()=>{
+    let timer=setInterval(()=>{
 
 
-tekst.textContent =
-wiel.keuzes[
-Math.floor(
-Math.random()*wiel.keuzes.length
-)
-];
+        tekst.textContent =
+        wiel.keuzes[
+            Math.floor(
+            Math.random()*wiel.keuzes.length
+            )
+        ];
 
 
-teller++;
+        teller++;
 
 
-if(teller>15){
+        if(teller>15){
+
+            clearInterval(timer);
+
+        }
 
 
-clearInterval(timer);
-
-
-tekst.classList.remove(
-"draaien"
-);
-
+    },80);
 
 }
 
 
 
-},80);
-
-
-}
-
-
-
-
-
 // ----------------------------
-// INSTELLINGEN
+// INSTELLINGEN OPENEN
 // ----------------------------
-document
-.getElementById("terugKnop")
-.onclick=function(){
 
-document
-.getElementById("instellingen")
-.classList.add("verborgen");
-
-
-document
-.querySelector(".app")
-.classList.remove("verborgen");
-
-};
 document
 .getElementById("openInstellingen")
 .onclick=function(){
@@ -230,28 +183,36 @@ document
 
 maakInstellingen();
 
-
 };
 
 
+
+// ----------------------------
+// INSTELLINGEN TONEN
+// ----------------------------
+
 function maakInstellingen(){
 
-    let plek = document.getElementById(
-        "instellingLijsten"
+    let plek =
+    document.getElementById(
+    "instellingLijsten"
     );
 
-    plek.innerHTML = "";
+
+    plek.innerHTML="";
 
 
     wielen.forEach((wiel,index)=>{
 
 
-        let blok = document.createElement("div");
+        let blok =
+        document.createElement("div");
 
-        blok.className = "lijst";
+
+        blok.className="lijst";
 
 
-        blok.innerHTML = `
+        blok.innerHTML=`
 
         <h2>
         ${wiel.icoon}
@@ -263,8 +224,7 @@ function maakInstellingen(){
         </p>
 
 
-        <button class="verwijderKnop"
-        data-index="${index}">
+        <button onclick="verwijderWiel(${index})">
 
         🗑 Verwijderen
 
@@ -278,48 +238,60 @@ function maakInstellingen(){
 
     });
 
+}
 
 
-    document
-    .querySelectorAll(".verwijderKnop")
-    .forEach(knop=>{
+
+// ----------------------------
+// TERUG KNOP
+// ----------------------------
+
+if(document.getElementById("terugKnop")){
+
+document
+.getElementById("terugKnop")
+.onclick=function(){
 
 
-        knop.onclick=function(){
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
 
 
-            let index =
-            this.dataset.index;
+document
+.querySelector(".app")
+.classList.remove("verborgen");
 
 
-            verwijderWiel(index);
-
-
-        };
-
-
-    });
-
+};
 
 }
 
 
 
+// ----------------------------
+// WIEL VERWIJDEREN
+// ----------------------------
 
 function verwijderWiel(index){
 
-    let akkoord = confirm(
-        "Wiel verwijderen?"
-    );
+    let naam =
+    wielen[index].naam;
 
 
-    if(akkoord){
+    if(confirm(
+    "Wiel '"+naam+"' verwijderen?"
+    )){
+
 
         wielen.splice(index,1);
 
+
         bewaar();
 
+
         bouwScherm();
+
 
         maakInstellingen();
 
@@ -329,12 +301,11 @@ function verwijderWiel(index){
 
 
 
-
-
-
 // ----------------------------
-// NIEUW WIEL
+// NIEUW WIEL OPENEN
 // ----------------------------
+
+if(document.getElementById("nieuwWiel")){
 
 
 document
@@ -355,10 +326,16 @@ document
 };
 
 
+}
 
 
 
-// extra regel toevoegen
+// ----------------------------
+// EXTRA REGEL
+// ----------------------------
+
+if(document.getElementById("regelToevoegen")){
+
 
 document
 .getElementById("regelToevoegen")
@@ -382,36 +359,32 @@ document
 
 };
 
+}
 
 
 
+// ----------------------------
+// NIEUW WIEL OPSLAAN
+// ----------------------------
 
-// nieuw wiel bewaren
+if(document.getElementById("bewaarNieuwWiel")){
+
 
 document
 .getElementById("bewaarNieuwWiel")
 .onclick=function(){
 
 
-
 let naam =
-document
-.getElementById("nieuwWielNaam")
-.value;
-
+document.getElementById("nieuwWielNaam").value;
 
 
 let icoon =
-document
-.getElementById("nieuwWielIcoon")
-.value;
-
+document.getElementById("nieuwWielIcoon").value;
 
 
 let velden =
-document
-.querySelectorAll(".keuzeRegel");
-
+document.querySelectorAll(".keuzeRegel");
 
 
 let keuzes=[];
@@ -419,27 +392,29 @@ let keuzes=[];
 
 velden.forEach(v=>{
 
-let regels = v.value
+
+v.value
 .split("\n")
-.filter(regel => regel.trim() !== "");
+.forEach(regel=>{
 
 
-regels.forEach(regel => {
+if(regel.trim()!=""){
 
-keuzes.push(regel.trim());
+keuzes.push(
+regel.trim()
+);
+
+}
+
 
 });
 
+
 });
 
 
 
-
-
-if(
-naam &&
-keuzes.length>0
-){
+if(naam && keuzes.length){
 
 
 wielen.push({
@@ -453,45 +428,10 @@ keuzes:keuzes
 });
 
 
-
 bewaar();
 
 
-
 bouwScherm();
-
-
-
-terugNaarHoofdscherm();
-
-
-
-}
-
-
-
-};
-
-
-
-
-
-
-// annuleren
-
-document
-.getElementById("annuleerNieuwWiel")
-.onclick=function(){
-
-terugNaarHoofdscherm();
-
-};
-
-
-
-
-
-function terugNaarHoofdscherm(){
 
 
 document
@@ -500,85 +440,100 @@ document
 
 
 document
-.getElementById("instellingen")
-.classList.add("verborgen");
-
-
-document
 .querySelector(".app")
 .classList.remove("verborgen");
 
-document
-.getElementById("terugKnop")
-.onclick=function(){
 
-document
-.getElementById("instellingen")
-.classList.add("verborgen");
+}
 
 
-document
-.querySelector(".app")
-.classList.remove("verborgen");
+};
 
-};    
 
 }
 
 
 
-
-
-
-// START
 // ----------------------------
-// EXPORTEREN
+// ANNULEREN NIEUW WIEL
 // ----------------------------
+
+if(document.getElementById("annuleerNieuwWiel")){
+
+
+document
+.getElementById("annuleerNieuwWiel")
+.onclick=function(){
+
+
+document
+.getElementById("nieuwWielScherm")
+.classList.add("verborgen");
+
+
+document
+.querySelector(".app")
+.classList.remove("verborgen");
+
+
+};
+
+}
+
+
+
+// ----------------------------
+// EXPORT
+// ----------------------------
+
+if(document.getElementById("exporteerSpel")){
+
 
 document
 .getElementById("exporteerSpel")
 .onclick=function(){
 
-let bestand = JSON.stringify(
-{
-    spelnaam:
-    document.getElementById("spelNaam").textContent,
 
-    wielen:wielen
-},
+let blob =
+new Blob(
+[
+JSON.stringify(
+{wielen:wielen},
 null,
-2
-);
-
-
-let blob = new Blob(
-[bestand],
+2)
+],
 {
 type:"application/json"
-}
-);
+});
 
 
-let link=document.createElement("a");
+let link =
+document.createElement("a");
 
-link.href=
+
+link.href =
 URL.createObjectURL(blob);
 
 
-link.download=
+link.download =
 "keuzemachine-spel.json";
 
 
 link.click();
 
+
 };
 
+}
 
 
 
 // ----------------------------
-// IMPORTEREN OPENEN
+// IMPORT
 // ----------------------------
+
+if(document.getElementById("importeerSpelKnop")){
+
 
 document
 .getElementById("importeerSpelKnop")
@@ -590,20 +545,20 @@ document
 
 };
 
+}
 
 
 
-// ----------------------------
-// IMPORTEREN UITVOEREN
-// ----------------------------
+if(document.getElementById("importeerBestand")){
+
 
 document
 .getElementById("importeerBestand")
-.onchange=function(event){
+.onchange=function(e){
 
 
 let bestand =
-event.target.files[0];
+e.target.files[0];
 
 
 let lezen =
@@ -617,25 +572,12 @@ let data =
 JSON.parse(lezen.result);
 
 
-
-let akkoord =
-confirm(
-"Het huidige spel wordt vervangen.\n\nDoorgaan?"
-);
+if(confirm(
+"Huidig spel vervangen?"
+)){
 
 
-
-if(!akkoord){
-
-return;
-
-}
-
-
-
-wielen =
-data.wielen;
-
+wielen=data.wielen;
 
 
 bewaar();
@@ -644,20 +586,26 @@ bewaar();
 bouwScherm();
 
 
-
 alert(
 "Spel geïmporteerd"
 );
 
 
+}
+
+
 };
-
-
 
 
 lezen.readAsText(bestand);
 
 
-
 };
+
+}
+
+
+
+// START
+
 laadData();
