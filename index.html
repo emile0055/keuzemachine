@@ -169,13 +169,20 @@ Druk op een knop
   
 </div>
 
+
+
+
+
 <div id="instellingen" class="verberg">
 
+
 <h1>⚙️ Instellingen</h1>
+
 
 <div class="instellingen" id="velden">
 
 </div>
+
 
 <button class="opslaan" id="opslaan">
 💾 Opslaan
@@ -191,14 +198,19 @@ Druk op een knop
 ⬅ Terug
 </button>
 
-</div>
 
 </div>
+
+
+</div>
+
+
+
 
 <script>
 
-const standaard=[
 
+const standaard=[
 
 [
 "Parkeren liggen      & [ Attributen] & [ Tijd ] uur",
@@ -327,43 +339,61 @@ return keuze;
 
 }
 
+
+
 function draai(n){
+
 
 let slot=document.getElementById("slot");
 
 let uit=document.getElementById("uit"+(n+1));
 
+
 let teller=0;
+
 
 slot.classList.add("draaien");
 
+
 let timer=setInterval(()=>{
+
 
 slot.textContent=
 lijsten[n][Math.floor(Math.random()*20)];
 
+
 teller++;
+
 
 if(teller>12){
 
 clearInterval(timer);
 
+
 let keuze=randomKeuze(n);
+
 
 slot.textContent=keuze;
 
 uit.textContent=keuze;
 
+
 slot.classList.remove("draaien");
+
 
 if(navigator.vibrate)
 navigator.vibrate(80);
 
+
 }
+
 
 },80);
 
+
 }
+
+
 
 for(let i=0;i<4;i++){
 
@@ -372,32 +402,45 @@ document.getElementById("knop"+(i+1))
 
 }
 
+
+
+
+
 function toonInstellingen(){
+
 
 document.getElementById("spel")
 .classList.add("verberg");
 
+
 document.getElementById("instellingen")
 .classList.remove("verberg");
+
 
 maakVelden();
 
 }
 
+
+
 function maakVelden(){
+
 
 let div=document.getElementById("velden");
 
 div.innerHTML="";
 
+
 let namen=[
 "Handeling",
 "Attributen",
-"Tijd",
+"Duur",
 "Aantal"
 ];
 
+
 for(let i=0;i<4;i++){
+
 
 let titel=document.createElement("h2");
 
@@ -405,7 +448,10 @@ titel.textContent=namen[i];
 
 div.appendChild(titel);
 
+
+
 for(let j=0;j<20;j++){
+
 
 let input=document.createElement("input");
 
@@ -415,16 +461,24 @@ input.dataset.wiel=i;
 
 input.dataset.nr=j;
 
+
 div.appendChild(input);
 
-}
 
 }
 
+
 }
+
+
+}
+
+
 
 document.getElementById("naarInstellingen")
 .onclick=toonInstellingen;
+
+
 
 document.getElementById("terug")
 .onclick=function(){
@@ -432,15 +486,20 @@ document.getElementById("terug")
 document.getElementById("instellingen")
 .classList.add("verberg");
 
+
 document.getElementById("spel")
 .classList.remove("verberg");
 
 };
 
+
+
 document.getElementById("opslaan")
 .onclick=function(){
 
+
 let inputs=document.querySelectorAll("#velden input");
+
 
 inputs.forEach(i=>{
 
@@ -448,32 +507,43 @@ lijsten[i.dataset.wiel][i.dataset.nr]=i.value;
 
 });
 
+
 localStorage.setItem(
 "lijsten",
 JSON.stringify(lijsten)
 );
 
+
 alert("Opgeslagen");
 
 };
+
+
 
 document.getElementById("reset")
 .onclick=function(){
 
 if(confirm("Alles terug naar standaard?")){
 
+
 lijsten=
 JSON.parse(JSON.stringify(standaard));
 
+
 localStorage.removeItem("lijsten");
+
 
 maakVelden();
 
 }
 
+
 };
 
+
+
 </script>
+
 
 </body>
 </html>
