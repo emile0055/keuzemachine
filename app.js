@@ -489,5 +489,118 @@ document
 
 
 // START
+// ----------------------------
+// EXPORTEREN
+// ----------------------------
 
+document
+.getElementById("exporteerSpel")
+.onclick=function(){
+
+let bestand = JSON.stringify(
+{
+    spelnaam:
+    document.getElementById("spelNaam").textContent,
+
+    wielen:wielen
+},
+null,
+2
+);
+
+
+let blob = new Blob(
+[bestand],
+{
+type:"application/json"
+}
+);
+
+
+let link=document.createElement("a");
+
+link.href=
+URL.createObjectURL(blob);
+
+
+link.download=
+"keuzemachine-spel.json";
+
+
+link.click();
+
+};
+
+
+
+
+// ----------------------------
+// IMPORTEREN OPENEN
+// ----------------------------
+
+document
+.getElementById("importeerSpelKnop")
+.onclick=function(){
+
+document
+.getElementById("importeerBestand")
+.click();
+
+};
+
+
+
+
+// ----------------------------
+// IMPORTEREN UITVOEREN
+// ----------------------------
+
+document
+.getElementById("importeerBestand")
+.onchange=function(event){
+
+
+let bestand =
+event.target.files[0];
+
+
+let lezen =
+new FileReader();
+
+
+
+lezen.onload=function(){
+
+
+let data =
+JSON.parse(lezen.result);
+
+
+
+wielen =
+data.wielen;
+
+
+
+bewaar();
+
+
+bouwScherm();
+
+
+
+alert(
+"Spel geïmporteerd"
+);
+
+
+};
+
+
+
+lezen.readAsText(bestand);
+
+
+
+};
 laadData();
