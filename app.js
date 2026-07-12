@@ -466,6 +466,20 @@ document
 .querySelector(".app")
 .classList.remove("verborgen");
 
+document
+.getElementById("terugKnop")
+.onclick=function(){
+
+document
+.getElementById("instellingen")
+.classList.add("verborgen");
+
+
+document
+.querySelector(".app")
+.classList.remove("verborgen");
+
+};    
 
 }
 
