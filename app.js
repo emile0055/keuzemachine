@@ -243,13 +243,9 @@ kaart
 // DRAAIEN
 // -----------------------------
 
-
 function draaiWiel(index){
 
-
-let wiel =
-wielen[index];
-
+let wiel = wielen[index];
 
 
 if(wiel.vergrendeld){
@@ -271,7 +267,21 @@ if(!veld)return;
 
 
 
-let teller=0;
+let knop =
+veld.parentElement.querySelector(
+".draaiKnop"
+);
+
+
+
+if(knop){
+
+knop.disabled = true;
+
+knop.innerText =
+"⏳ Bezig...";
+
+}
 
 
 
@@ -279,8 +289,16 @@ speelGeluid();
 
 
 
-let timer =
-setInterval(()=>{
+let snelheid = 50;
+
+let teller = 0;
+
+let maxDraaien = 35;
+
+
+
+function volgende(){
+
 
 
 let keuze =
@@ -288,11 +306,9 @@ let keuze =
 wiel.keuzes[
 
 Math.floor(
-
 Math.random()
 *
 wiel.keuzes.length
-
 )
 
 ];
@@ -308,38 +324,57 @@ teller++;
 
 
 
-if(teller>=20){
+if(teller < maxDraaien){
 
 
-clearInterval(
-timer
+snelheid += 8;
+
+
+
+setTimeout(
+volgende,
+snelheid
 );
 
 
 
-wiel.resultaat =
-keuze;
+}
 
+else{
+
+
+wiel.resultaat = keuze;
 
 
 bewaar();
-
 
 
 toonResultaat();
 
 
 
+if(knop){
+
+knop.disabled = false;
+
+knop.innerText =
+"🎰 Draai";
+
 }
 
 
 
-},70);
-
+}
 
 
 }
 
+
+
+volgende();
+
+
+}
 
 
 
