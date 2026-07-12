@@ -251,8 +251,7 @@ document.getElementById(
 plek.innerHTML="";
 
 
-
-wielen.forEach((wiel)=>{
+wielen.forEach((wiel,index)=>{
 
 
 let blok =
@@ -273,17 +272,54 @@ ${wiel.naam}
 ${wiel.keuzes.length} keuzes
 </p>
 
-`;
 
+<button onclick="verwijderWiel(${index})">
+
+🗑 Verwijderen
+
+</button>
+
+`;
 
 
 plek.appendChild(blok);
 
 
-
 });
 
+function verwijderWiel(index){
 
+
+let naam =
+wielen[index].naam;
+
+
+let akkoord =
+confirm(
+"Wiel '"+naam+"' verwijderen?"
+);
+
+
+
+if(akkoord){
+
+
+wielen.splice(index,1);
+
+
+bewaar();
+
+
+maakInstellingen();
+
+
+bouwScherm();
+
+
+}
+
+
+}
 
 }
 
