@@ -1,228 +1,173 @@
 // Keuzemachine Pro 5.0
-// Basisversie
+// Data wordt geladen uit data.json
+
+let wielen = [];
+
+const container = document.getElementById("wielen");
 
 
-const standaardWielen = [
+// Data laden
 
-{
-naam:"Handeling",
-icoon:"🎯",
-items:[
-"Wandelen",
-"Springen",
-"Rennen",
-"Dansen",
-"Lezen",
-"Tekenen",
-"Schrijven",
-"Fietsen",
-"Klimmen",
-"Zingen",
-"Koken",
-"Bouwen",
-"Rollen",
-"Lachen",
-"Fluiten"
-]
-},
+async function laadData() {
+
+    try {
+
+        const antwoord = await fetch("data.json");
+
+        const data = await antwoord.json();
+
+        wielen = data.wielen;
+
+        document.getElementById("spelNaam").textContent =
+            data.spelnaam;
 
 
-{
-naam:"Attribuut",
-icoon:"🎒",
-items:[
-"Rode bal",
-"Blauwe bal",
-"Touw",
-"Boek",
-"Stoel",
-"Paraplu",
-"Zaklamp",
-"Fles",
-"Bloem",
-"Potlood",
-"Doos",
-"Horloge",
-"Ring",
-"Kaart",
-"Steen"
-]
-},
+        bouwScherm();
 
+    }
 
-{
-naam:"Duur",
-icoon:"⏱️",
-items:[
-"10 seconden",
-"20 seconden",
-"30 seconden",
-"1 minuut",
-"2 minuten",
-"5 minuten",
-"10 minuten",
-"15 minuten",
-"30 minuten",
-"1 uur"
-]
-},
+    catch(error){
 
+        console.log("Fout bij laden data:", error);
 
-{
-naam:"Aantal",
-icoon:"🔢",
-items:[
-"1",
-"2",
-"3",
-"4",
-"5",
-"6",
-"10",
-"20",
-"50"
-]
+        container.innerHTML =
+        "Kan data.json niet laden";
+
+    }
+
 }
 
-];
 
 
 
-// gegevens ophalen
-
-let wielen =
-JSON.parse(localStorage.getItem("keuzemachine"))
-||
-standaardWielen;
-
-
-
-const container =
-document.getElementById("wielen");
-
-
+// Kaarten maken
 
 function bouwScherm(){
 
-
-container.innerHTML="";
-
-
-wielen.forEach((wiel,index)=>{
+    container.innerHTML="";
 
 
-let kaart=document.createElement("div");
-
-kaart.className="wiel-kaart";
+    wielen.forEach((wiel,index)=>{
 
 
-kaart.innerHTML=`
+        let kaart=document.createElement("div");
 
-<div class="wiel-titel">
-
-<span class="wiel-icoon">
-${wiel.icoon}
-</span>
-
-${wiel.naam}
-
-</div>
+        kaart.className="wiel-kaart";
 
 
-<div class="wiel-waarde" id="waarde${index}">
-${wiel.items[0]}
-</div>
+        kaart.innerHTML=`
+
+        <div class="wiel-titel">
+
+        <span class="wiel-icoon">
+        ${wiel.icoon}
+        </span>
+
+        ${wiel.naam}
+
+        </div>
 
 
-<button class="draaiKnop" onclick="draai(${index})">
-
-Draai ${wiel.naam}
-
-</button>
-
-`;
+        <div class="wiel-waarde" id="waarde${index}">
+        ${wiel.keuzes[0]}
+        </div>
 
 
-container.appendChild(kaart);
+        <button class="draaiKnop"
+        onclick="draai(${index})">
+
+        Draai ${wiel.naam}
+
+        </button>
+
+        `;
 
 
-});
+        container.appendChild(kaart);
 
+
+    });
 
 }
 
 
+
+
+
+// Draaien
 
 function draai(index){
 
 
-let wiel=wielen[index];
+    let wiel=wielen[index];
+
+    let tekst=document.getElementById(
+        "waarde"+index
+    );
 
 
-let tekst=document.getElementById(
-"waarde"+index
-);
+    tekst.classList.add("draaien");
 
 
-tekst.classList.add("draaien");
+    let teller=0;
 
 
-let teller=0;
+    let timer=setInterval(()=>{
 
 
-let timer=setInterval(()=>{
+        let keuze =
+        wiel.keuzes[
+            Math.floor(
+                Math.random()
+                *
+                wiel.keuzes.length
+            )
+        ];
 
 
-let keuze =
-wiel.items[
-Math.floor(
-Math.random()*wiel.items.length
-)
-];
+        tekst.textContent=keuze;
 
 
-tekst.textContent=keuze;
+        teller++;
 
 
-teller++;
+        if(teller>15){
 
 
-
-if(teller>15){
-
-
-clearInterval(timer);
+            clearInterval(timer);
 
 
-tekst.classList.remove(
-"draaien"
-);
+            tekst.classList.remove(
+                "draaien"
+            );
 
 
+            let eind =
+            wiel.keuzes[
+                Math.floor(
+                    Math.random()
+                    *
+                    wiel.keuzes.length
+                )
+            ];
 
-let eind =
-wiel.items[
-Math.floor(
-Math.random()*wiel.items.length
-)
-];
+
+            tekst.textContent=eind;
 
 
-tekst.textContent=eind;
+        }
+
+
+    },80);
 
 
 }
 
 
-},80);
-
-
-}
 
 
 
-
-// instellingen openen
+// Instellingen openen
 
 document
 .getElementById("openInstellingen")
@@ -247,7 +192,8 @@ maakInstellingen();
 
 
 
-// instellingen maken
+
+// Instellingen tonen
 
 function maakInstellingen(){
 
@@ -264,28 +210,26 @@ plek.innerHTML="";
 wielen.forEach((wiel,index)=>{
 
 
-let div=document.createElement("div");
+let blok=document.createElement("div");
 
-div.className="lijst";
+blok.className="lijst";
 
 
-div.innerHTML=`
+blok.innerHTML=`
 
 <h2>
 ${wiel.icoon}
 ${wiel.naam}
 </h2>
 
-
 <textarea id="lijst${index}">
-${wiel.items.join("\n")}
+${wiel.keuzes.join("\n")}
 </textarea>
 
 `;
 
 
-plek.appendChild(div);
-
+plek.appendChild(blok);
 
 
 });
@@ -295,6 +239,9 @@ plek.appendChild(div);
 
 
 
+
+
+// Terug uit instellingen
 
 document
 .getElementById("terugKnop")
@@ -311,13 +258,16 @@ document.getElementById(
 
 
 
-wiel.items =
+wiel.keuzes =
 tekst
 .split("\n")
-.filter(x=>x.trim()!="");
+.filter(
+regel=>regel.trim()!=""
+);
 
 
 });
+
 
 
 localStorage.setItem(
@@ -345,4 +295,7 @@ bouwScherm();
 
 
 
-bouwScherm();
+
+// Start app
+
+laadData();
