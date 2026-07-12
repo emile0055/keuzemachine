@@ -611,7 +611,68 @@ lezen.readAsText(bestand);
 
 }
 
+// ----------------------------
+// WIEL BEWERKEN
+// ----------------------------
 
+let bewerkIndex = -1;
+
+
+function bewerkWiel(index){
+
+    bewerkIndex = index;
+
+    let wiel = wielen[index];
+
+
+    document
+    .getElementById("instellingen")
+    .classList.add("verborgen");
+
+
+    document
+    .getElementById("nieuwWielScherm")
+    .classList.remove("verborgen");
+
+
+    document
+    .getElementById("nieuwWielNaam")
+    .value = wiel.naam;
+
+
+    document
+    .getElementById("nieuwWielIcoon")
+    .value = wiel.icoon;
+
+
+    let veld =
+    document.getElementById("nieuweKeuzes");
+
+
+    veld.innerHTML = "";
+
+
+    wiel.keuzes.forEach(keuze=>{
+
+
+        let tekst =
+        document.createElement("textarea");
+
+
+        tekst.className =
+        "keuzeRegel";
+
+
+        tekst.value = keuze;
+
+
+        veld.appendChild(tekst);
+
+
+    });
+
+
+}
 
 // START
 
