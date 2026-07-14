@@ -7,9 +7,9 @@
     /* =============================================
        KLEUREN
        ============================================= */
-    --achtergrondkleur: #424b4;        /* Achtergrondkleur hoofdscherm */
-    --wielkaart-kleur: #5a675c;        /* Kleur van de wielkaarten */
-    --resultaat-kleur: #8fbc8b;          /* Achtergrondkleur resultaatvak */
+    --achtergrondkleur: #5a675c;        /* Achtergrondkleur hoofdscherm */
+    --wielkaart-kleur: #424b4;        /* Kleur van de wielkaarten */
+    --resultaat-kleur: #8fbc8b;        /* Achtergrondkleur resultaatvak */
     --knop-kleur: #37000;              /* Standaard knopkleur */
     --knop-tekstkleur: white;          /* Tekstkleur van knoppen */
     --vergrendeld-kleur: #121913;      /* Kleur voor vergrendelde elementen */
