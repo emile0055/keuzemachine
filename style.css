@@ -23,7 +23,7 @@
     --wiel-padding: 8px;               /* Opvulling van wielkaarten */
     --wiel-waarde-hoogte: 50px;        /* Hoogte van het wiel-waarde vak */
     --wiel-waarde-lettergrootte: 18px; /* Lettergrootte van wielwaarden */
-    --knop-padding: 10px 14px;         /* Opvulling van knoppen */
+    --knop-padding: 10px 25px;         /* Opvulling van knoppen */
     --knop-lettergrootte:10px;        /* Lettergrootte van knoppen */
     --titel-lettergrootte: 15px;       /* Lettergrootte van de titel */
     --resultaat-lettergrootte: 10px;   /* Lettergrootte in resultaatvak */
