@@ -7,10 +7,10 @@
     /* =============================================
        KLEUREN
        ============================================= */
-    --achtergrondkleur: #424b4;       /* Achtergrondkleur hoofdscherm */
+    --achtergrondkleur: #424b4;        /* Achtergrondkleur hoofdscherm */
     --wielkaart-kleur: #5a675c;        /* Kleur van de wielkaarten */
-    --resultaat-kleur: white;          /* Achtergrondkleur resultaatvak */
-    --knop-kleur: #37000;             /* Standaard knopkleur */
+    --resultaat-kleur: #8fbc8b;          /* Achtergrondkleur resultaatvak */
+    --knop-kleur: #37000;              /* Standaard knopkleur */
     --knop-tekstkleur: white;          /* Tekstkleur van knoppen */
     --vergrendeld-kleur: #121913;      /* Kleur voor vergrendelde elementen */
     --instellingen-kleur: white;       /* Achtergrondkleur instellingenvelden */
@@ -23,10 +23,10 @@
     --wiel-padding: 8px;               /* Opvulling van wielkaarten */
     --wiel-waarde-hoogte: 45px;        /* Hoogte van het wiel-waarde vak */
     --wiel-waarde-lettergrootte: 18px; /* Lettergrootte van wielwaarden */
-    --knop-padding: 10px 14px;          /* Opvulling van knoppen */
+    --knop-padding: 10px 14px;         /* Opvulling van knoppen */
     --knop-lettergrootte: 16px;        /* Lettergrootte van knoppen */
     --titel-lettergrootte: 25px;       /* Lettergrootte van de titel */
-    --resultaat-lettergrootte: 16px;  /* Lettergrootte in resultaatvak */
+    --resultaat-lettergrootte: 16px;   /* Lettergrootte in resultaatvak */
 
     /* =============================================
        AFSTANDEN EN AFRONDINGEN
