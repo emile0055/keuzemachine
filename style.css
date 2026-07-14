@@ -10,191 +10,89 @@
    - Instellingen       = input / textarea
    ================================================== */
 
-
-
 /* ==================================================
    ALGEMENE INSTELLINGEN
    ================================================== */
 
-
 * {
-
     box-sizing: border-box;
-
 }
-
-
 
 body {
 
     margin: 0;
-
     padding: 10px;
 
-
     /* ACHTERGRONDKLEUR HOOFDSCHERM */
-
     background: #424b4;
-
-
     font-family:
-
     -apple-system,
-
     BlinkMacSystemFont,
-
     "Segoe UI",
-
     sans-serif;
-
-
     color: #111;
-
 }
-
-
-
-
 
 /* ==================================================
    HOOFDPAGINA
    ================================================== */
 
-
 .app {
-
     max-width: 500px;
-
     margin: auto;
-
 }
-
-
-
-
 
 /* ==================================================
    TITELBALK
    ================================================== */
 
-
 header {
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     height:25px;
-
 }
-
-
 
 h1 {
-
     font-size:25px;
-
     margin:0;
-
 }
-
-
-
-
 
 /* ==================================================
    RESULTAATVAK BOVENAAN
    ================================================== */
-
-
 #resultaat {
 
-
     /* KLEUR RESULTAATVAK */
-
     background:white;
-
-
     border-radius:16px;
-
-
     padding:10px;
-
-
     margin:8px 0;
-
-
     text-align:center;
-
-
 }
-
-
 
 #resultaat h2 {
-
-
     margin:0;
-
-
     font-size:16px;
-
-
 }
-
-
 
 #samenvatting {
-
-
     font-size:25px;
-
-
     font-weight:100;
-
-
     line-height:1.5;
-
-
     white-space:pre-line;
-
-
     min-height:25px;
-
-
 }
-
-
-
-
-
-
 
 /* ==================================================
    WIELEN OVERZICHT
    ================================================== */
 
-
 #wielen {
-
-
     display:grid;
-
-
     grid-template-columns:1fr 1fr;
-
-
     gap:8px;
-
-
 }
-
-
-
-
-
 
 /* ==================================================
    KAART VAN EEN WIEL
@@ -203,350 +101,138 @@ h1 {
    🎒 Attribuut
    ================================================== */
 
-
 .wiel {
-
-
     /* KLEUR WIELKAART */
-
     background:#49664b;
-
-
     border-radius:16px;
-
-
     padding:8px;
-
-
     text-align:center;
-
-
     box-shadow:
-
     0 2px 5px rgba(0,0,0,.15);
-
-
 }
-
-
-
-
 
 .wiel-titel {
-
-
     font-size:15px;
-
-
     font-weight:bold;
-
-
 }
-
-
 
 .wiel-waarde {
-
-
     height:45px;
-
-
     display:flex;
-
-
     align-items:center;
-
-
     justify-content:center;
-
-
     font-size:18px;
-
-
     font-weight:bold;
-
-
     overflow:hidden;
-
-
 }
-
-
-
-
-
-
 
 /* ==================================================
    KNOPPEN
    Hier verander je de standaard knopkleur
    ================================================== */
 
-
 button {
-
-
     /* KLEUR KNOP */
-
     background:#374d38;
-
-
     color:white;
-
-
     border:none;
-
-
     border-radius:12px;
-
-
     padding:10px 14px;
-
-
     font-size:16px;
-
-
     cursor:pointer;
-
-
 }
-
-
 
 button:active {
-
-
     transform:scale(.96);
-
-
 }
-
-
-
-
 
 /* Instellingen knop bovenaan */
 
-
 #instellingenKnop {
-
-
     width:45px;
-
-
     height:40px;
-
-
     padding:0;
-
-
     font-size:22px;
-
-
 }
-
-
-
-
-
 
 /* Draai knop in een wiel */
 
-
 .draaiKnop {
-
-
     width:100%;
-
-
     padding:8px;
-
-
     font-size:14px;
-
-
 }
-
-
-
-
 
 /* Tijdens draaien */
-
-
 .draaiKnop:disabled {
-
-
     opacity:.6;
-
-
 }
-
-
-
-
-
-
 
 /* ==================================================
    SLOTJE / VERGRENDELING
    ================================================== */
-
-
 .vergrendeld {
-
-
     background:#121913;
-
-
 }
-
-
-
-
-
-
 
 /* ==================================================
    INSTELLINGEN PAGINA
    ================================================== */
 
-
 .pagina {
-
-
     max-width:500px;
-
-
     margin:auto;
-
-
 }
-
-
 
 .verborgen {
-
-
     display:none;
-
-
 }
-
-
-
-
-
 
 /* Lijst met wielen in instellingen */
 
-
 #wielBeheer div {
-
-
     background:white;
-
-
     padding:10px;
-
-
     margin:8px 0;
-
-
     border-radius:14px;
-
-
 }
-
-
-
-
-
 
 /* ==================================================
    TEKSTVELDEN
    Nieuw wiel / bewerken
    ================================================== */
 
-
 input,
 textarea {
-
-
     width:100%;
-
-
     padding:10px;
-
-
     margin-bottom:10px;
-
-
     border-radius:10px;
-
-
     border:1px solid #ccc;
-
-
     font-size:16px;
-
-
 }
-
-
 
 textarea {
-
-
     resize:none;
-
-
 }
-
-
-
-
-
 
 /* ==================================================
    KLEINERE IPHONES
    Bijvoorbeeld iPhone SE
    ================================================== */
 
-
 @media(max-height:700px){
-
-
-
     .wiel {
-
-
         padding:5px;
-
-
     }
-
-
 
     .wiel-waarde {
-
-
         height:35px;
-
-
         font-size:16px;
-
-
     }
 
-
-
     button {
-
-
         padding:8px;
-
-
     }
 
 
