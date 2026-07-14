@@ -21,7 +21,7 @@
        ============================================= */
     --basis-padding: 10px;             /* Basis opvulling */
     --wiel-padding: 8px;               /* Opvulling van wielkaarten */
-    --wiel-waarde-hoogte: 45px;        /* Hoogte van het wiel-waarde vak */
+    --wiel-waarde-hoogte: 20px;        /* Hoogte van het wiel-waarde vak */
     --wiel-waarde-lettergrootte: 18px; /* Lettergrootte van wielwaarden */
     --knop-padding: 10px 14px;         /* Opvulling van knoppen */
     --knop-lettergrootte:10px;        /* Lettergrootte van knoppen */
