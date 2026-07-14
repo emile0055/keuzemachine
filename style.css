@@ -25,8 +25,8 @@
     --wiel-waarde-lettergrootte: 18px; /* Lettergrootte van wielwaarden */
     --knop-padding: 10px 14px;         /* Opvulling van knoppen */
     --knop-lettergrootte:50px;        /* Lettergrootte van knoppen */
-    --titel-lettergrootte: 50px;       /* Lettergrootte van de titel */
-    --resultaat-lettergrootte: 50px;   /* Lettergrootte in resultaatvak */
+    --titel-lettergrootte: 15px;       /* Lettergrootte van de titel */
+    --resultaat-lettergrootte: 10px;   /* Lettergrootte in resultaatvak */
 
     /* =============================================
        AFSTANDEN EN AFRONDINGEN
