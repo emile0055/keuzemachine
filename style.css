@@ -19,7 +19,7 @@
     /* =============================================
        GROOTTES
        ============================================= */
-    --basis-padding: 10px;             /* Basis opvulling */
+    --basis-padding: 50px;             /* Basis opvulling */
     --wiel-padding: 8px;               /* Opvulling van wielkaarten */
     --wiel-waarde-hoogte: 50px;        /* Hoogte van het wiel-waarde vak */
     --wiel-waarde-lettergrootte: 18px; /* Lettergrootte van wielwaarden */
