@@ -168,7 +168,7 @@ button:active {
 .draaiKnop {
     width: 100%;
     padding: 8px;
-    font-size:50px; /* Tekst groote van "Draai" */
+    font-size:30px; /* Tekst groote van "Draai" */
 }
 
 /* Tijdens draaien */
